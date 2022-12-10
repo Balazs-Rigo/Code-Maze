@@ -29,13 +29,19 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
 
 builder.Services.AddScoped<ValidationFilterAttribute>();
 builder.Services.AddScoped<ValidateMediaTypeAttribute>();
+
 builder.Services.AddScoped<IDataShaper<EmployeeDto>,DataShaper<EmployeeDto>>();
 builder.Services.AddScoped<IEmployeeLinks, EmployeeLinks>();
+
 builder.Services.ConfigureVersioning();
 builder.Services.ConfigureResponseCaching();
+
 builder.Services.AddMemoryCache();
 builder.Services.ConfigureRateLimitingOptions();
 builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddAuthentication();
+builder.Services.ConfigureIdentity();
 
 builder.Services.AddControllers(config =>
             {
@@ -75,7 +81,7 @@ app.UseIpRateLimiting();
 app.UseCors("CorsPolicy");
 app.UseResponseCaching();
 
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
